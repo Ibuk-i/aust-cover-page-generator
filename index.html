@@ -5,12 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AUST Cover Page Generator</title>
     <style>
+        /* =========================================
+           SPACING CONTROLS
+           ========================================= */
         :root {
             --top-start-gap: 30px; 
             --gap-before-submitted: 40px; 
             --gap-before-dates: 60px; 
         }
 
+        /* --- DARK MODE SCREEN INTERFACE STYLING --- */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #121212;
@@ -52,8 +56,10 @@
         .form-group-row { display: flex; gap: 10px; }
         .form-group-row > div { flex: 1; }
 
+        /* Warning box styled for dark mode */
         .warning-box { background: #332b00; padding: 10px; border-left: 4px solid #f39c12; border-radius: 4px; margin-bottom: 15px; }
 
+        /* Gray-out class for disabled automated sections */
         .disabled-section {
             opacity: 0.3;
             pointer-events: none;
@@ -68,6 +74,7 @@
         }
         .btn-print:hover { background: #146c43; }
 
+        /* --- THE A4 PAPER PREVIEW (Forces White Mode) --- */
         .a4-paper {
             width: 210mm;
             min-height: 297mm;
@@ -117,6 +124,35 @@
             font-size: 15pt; font-weight: bold; margin-bottom: 12px; 
         }
 
+        /* --- MOBILE RESPONSIVENESS --- */
+        @media screen and (max-width: 800px) {
+            body { 
+                flex-direction: column; 
+                height: auto; 
+            }
+            .sidebar { 
+                width: 100%; 
+                height: auto; 
+                box-shadow: 0 4px 10px rgba(0,0,0,0.5); 
+            }
+            .preview-area { 
+                padding: 20px 10px; 
+                overflow-x: auto; 
+                justify-content: flex-start; 
+            }
+            .a4-paper {
+                margin: 0 auto;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .form-group-row { 
+                flex-direction: column; 
+                gap: 0; 
+            }
+        }
+
+        /* --- PRINT MEDIA QUERY --- */
         @media print {
             @page { size: A4 portrait; margin: 0; }
             body { background: white; margin: 0; padding: 0; }
