@@ -110,7 +110,7 @@
 
         table.info-table { width: 100%; font-family: "Times New Roman", Times, serif; font-size: 14pt; border-collapse: collapse; margin-bottom: 0; }
         table.info-table td { padding: 4px 0; vertical-align: top; }
-        .col-label { width: 175px; } 
+        .col-label { width: 210px; white-space: nowrap; } 
         .col-colon { width: 30px; text-align: center; }
         .col-value { font-weight: normal; }
 
@@ -152,13 +152,34 @@
             }
         }
 
-        /* --- PRINT MEDIA QUERY --- */
+        /* --- PRINT MEDIA QUERY (FIXED FOR MOBILE BLANK PAGES) --- */
         @media print {
             @page { size: A4 portrait; margin: 0; }
-            body { background: white; margin: 0; padding: 0; }
+            html, body { 
+                display: block; 
+                width: 210mm; 
+                height: 297mm; 
+                margin: 0; 
+                padding: 0; 
+                overflow: hidden; 
+                background: white; 
+            }
             .sidebar { display: none !important; }
-            .preview-area { padding: 0 !important; margin: 0 !important; display: block; }
-            .a4-paper { box-shadow: none !important; margin: 0 !important; width: 100% !important; height: 100% !important; }
+            .preview-area { 
+                padding: 0 !important; 
+                margin: 0 !important; 
+                display: block; 
+                overflow: visible; 
+            }
+            .a4-paper { 
+                box-shadow: none !important; 
+                margin: 0 !important; 
+                width: 210mm !important; 
+                height: 297mm !important; 
+                min-height: 0 !important; 
+                page-break-after: avoid;
+                page-break-inside: avoid;
+            }
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
         }
     </style>
