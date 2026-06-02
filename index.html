@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUST Cover Page Generator</title>
+    <style>
+        :root {
+            --top-start-gap: 30px; 
+            --gap-before-submitted: 40px; 
+            --gap-before-dates: 60px; 
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        .sidebar {
+            width: 400px;
+            background: #1e1e1e;
+            padding: 25px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .preview-area {
+            flex-grow: 1;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        h2 { color: #4ade80; margin-top: 0; border-bottom: 2px solid #4ade80; padding-bottom: 10px; font-size: 20px;}
+        h3 { color: #a3a3a3; font-size: 14px; text-transform: uppercase; margin: 20px 0 10px 0; border-bottom: 1px solid #333; padding-bottom: 5px;}
+        
+        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 12px; color: #bbb;}
+        input, select { 
+            width: 100%; padding: 9px; box-sizing: border-box; 
+            background: #2d2d2d; color: #fff; border: 1px solid #444; 
+            border-radius: 4px; margin-bottom: 12px; font-size: 14px;
+        }
+        input:focus, select:focus { border-color: #4ade80; outline: none; }
+
+        .form-group-row { display: flex; gap: 10px; }
+        .form-group-row > div { flex: 1; }
+
+        .warning-box { background: #332b00; padding: 10px; border-left: 4px solid #f39c12; border-radius: 4px; margin-bottom: 15px; }
+
+        .disabled-section {
+            opacity: 0.3;
+            pointer-events: none;
+            user-select: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-print {
+            background: #198754; color: white; padding: 15px; border: none; border-radius: 6px;
+            width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px;
+            box-shadow: 0 4px 6px rgba(25, 135, 84, 0.2); transition: background 0.2s;
+        }
+        .btn-print:hover { background: #146c43; }
+
+        .a4-paper {
+            width: 210mm;
+            min-height: 297mm;
+            background: white !important; 
+            color: black !important;      
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            padding: 0.5in; 
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .cover-content { line-height: 1.3; }
+
+        .header-title { 
+            font-family: "Times New Roman", Times, serif; 
+            font-size: 16pt; font-weight: bold; text-align: center; 
+            margin-top: var(--top-start-gap); margin-bottom: 25px; 
+        }
+        
+        .logo-wrap { text-align: center; margin-bottom: 25px; }
+        .logo-wrap img { width: 130px; height: auto; }
+        
+        .dept-title { 
+            font-family: "Times New Roman", Times, serif; 
+            font-size: 16pt; font-weight: bold; text-align: center; 
+            text-transform: uppercase; margin-bottom: 40px; 
+        }
+        
+        .lab-report-tag { 
+            font-family: "Calibri", "Segoe UI", sans-serif; 
+            font-size: 18pt; font-weight: bold; text-align: center; margin-bottom: 40px; 
+        }
+
+        table.info-table { width: 100%; font-family: "Times New Roman", Times, serif; font-size: 14pt; border-collapse: collapse; margin-bottom: 0; }
+        table.info-table td { padding: 4px 0; vertical-align: top; }
+        .col-label { width: 175px; } 
+        .col-colon { width: 30px; text-align: center; }
+        .col-value { font-weight: normal; }
+
+        .submitted-by-section { 
+            margin-left: 35%; 
+            margin-top: var(--gap-before-submitted); 
+            margin-bottom: var(--gap-before-dates); 
+        }
+        .submitted-by-text { 
+            font-family: "Calibri", "Segoe UI", sans-serif; 
+            font-size: 15pt; font-weight: bold; margin-bottom: 12px; 
+        }
+
+        @media print {
+            @page { size: A4 portrait; margin: 0; }
+            body { background: white; margin: 0; padding: 0; }
+            .sidebar { display: none !important; }
+            .preview-area { padding: 0 !important; margin: 0 !important; display: block; }
+            .a4-paper { box-shadow: none !important; margin: 0 !important; width: 100% !important; height: 100% !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>AUST Cover Page Generator</h2>
+        
+        <h3>1. Department</h3>
+        <select id="deptSelect">
+            <option value="EEE" selected>Electrical & Electronic Engineering</option>
+            <option value="OTHER">Other Department (Manual Entry)</option>
+        </select>
+        
+        <div id="manualDeptDiv" style="display: none;">
+            <label>Department Name</label>
+            <input type="text" id="deptInput" placeholder="e.g., Civil Engineering">
+        </div>
+
+        <div id="autoControlsDiv">
+            <h3>2. Automated Presets</h3>
+            <label>Course Preset</label>
+            <select id="courseSelect">
+                <option value="">-- Select Course (Use editable blocks if missing) --</option>
+                <optgroup label="1st Year, 1st Semester">
+                    <option value="EEE 1102">EEE 1102 - Electrical Circuits I Lab</option>
+                    <option value="EEE 1110">EEE 1110 - Structured Programming Lab (C++)</option>
+                </optgroup>
+                <optgroup label="1st Year, 2nd Semester">
+                    <option value="EEE 1202">EEE 1202 - Electrical Circuits II Lab</option>
+                    <option value="EEE 1204">EEE 1204 - Electronics I Lab</option>
+                </optgroup>
+                <optgroup label="2nd Year, 1st Semester">
+                    <option value="EEE 2104">EEE 2104 - Digital Circuit Design Lab</option>
+                    <option value="EEE 2106">EEE 2106 - Electrical Machineries Lab</option>
+                </optgroup>
+                <optgroup label="2nd Year, 2nd Semester">
+                    <option value="EEE 2200" selected>EEE 2200 - Electrical Installations</option>
+                    <option value="EEE 2204">EEE 2204 - Electronic Circuits - II Lab</option>
+                    <option value="EEE 2210">EEE 2210 - Electronics Simulation Lab</option>
+                    <option value="EEE 2212">EEE 2212 - Measurement and Instrumentation Lab</option>
+                    <option value="EEE 2226">EEE 2226 - Numerical Methods for Engineering Lab</option>
+                </optgroup>
+                <optgroup label="3rd Year, 1st Semester">
+                    <option value="EEE 3110">EEE 3110 - Microcontroller and Interfacing Lab</option>
+                </optgroup>
+                <optgroup label="3rd Year, 2nd Semester">
+                    <option value="EEE 3208">EEE 3208 - Communication Theory Lab</option>
+                    <option value="EEE 3218">EEE 3218 - Digital Signal Processing (DSP) Lab</option>
+                </optgroup>
+                <optgroup label="4th Year, 1st Semester">
+                    <option value="EEE 4106">EEE 4106 - Control System I Lab</option>
+                    <option value="EEE 4134">EEE 4134 - VLSI-I Lab</option>
+                    <option value="EEE 4138">EEE 4138 - Digital Electronics II Lab</option>
+                    <option value="EEE 4154">EEE 4154 - Power System II Lab</option>
+                    <option value="EEE 4174">EEE 4174 - Microwave Engineering Lab</option>
+                </optgroup>
+                <optgroup label="4th Year, 2nd Semester">
+                    <option value="EEE 4228">EEE 4228 - Power Electronics Lab</option>
+                    <option value="EEE 4232">EEE 4232 - VLSI-II Lab</option>
+                    <option value="EEE 4238">EEE 4238 - Biomedical Instrumentation Lab</option>
+                    <option value="EEE 4252">EEE 4252 - Power System Protection Lab</option>
+                </optgroup>
+            </select>
+
+            <label>Experiment No (From Manual)</label>
+            <select id="expNoSelect"></select>
+
+            <div class="warning-box">
+                <label style="color: #f39c12;">⚠️ Shift / Override Title</label>
+                <select id="expManualTitleSelect" style="background:#2d2d2d; border-color:#f39c12;"></select>
+            </div>
+            <div id="missingCourseNote" class="warning-box" style="display:none; margin-top:8px; background:#3a2430; border-left-color:#f39c12; color:#ffdede;">
+                If the selected course is not available, use the editable Course and Experiment fields below.
+            </div>
+        </div>
+
+        <div style="background: #2a2a2a; padding: 15px; border-left: 4px solid #4ade80; border-radius: 4px; margin-bottom: 15px; margin-top: 15px;">
+            <h3 style="margin-top: 0; color: #4ade80; border-bottom: none;">3. Final Print Values (Editable)</h3>
+            <div class="form-group-row">
+                <div>
+                    <label>Course Code</label>
+                    <input type="text" id="courseCodeInput">
+                </div>
+                <div style="flex: 2;">
+                    <label>Course Name</label>
+                    <input type="text" id="courseNameInput">
+                </div>
+            </div>
+            <div class="form-group-row">
+                <div>
+                    <label>Exp No</label>
+                    <input type="text" id="expNoInput">
+                </div>
+                <div style="flex: 3;">
+                    <label>Exp Name</label>
+                    <input type="text" id="expNameInput">
+                </div>
+            </div>
+        </div>
+
+        <h3>4. Student Identity & Term</h3>
+        <label>Student Name</label>
+        <input type="text" id="studentNameInput" placeholder="Arko">
+        
+        <label>Student ID</label>
+        <input type="text" id="studentIdInput" placeholder="00724105131">
+        
+        <div class="form-group-row">
+            <div>
+                <label>Section</label>
+                <input type="text" id="sectionInput" placeholder="A2">
+            </div>
+            <div>
+                <label>Group</label>
+                <input type="text" id="groupInput" placeholder="1">
+            </div>
+        </div>
+
+        <div class="form-group-row">
+            <div>
+                <label>Year</label>
+                <input type="text" id="yearInput" placeholder="e.g., 2nd Year">
+            </div>
+            <div>
+                <label>Semester</label>
+                <input type="text" id="semInput" placeholder="e.g., 2nd Semester">
+            </div>
+        </div>
+
+        <h3>5. Dates</h3>
+        <div class="form-group-row">
+            <div>
+                <label>Date of Performance</label>
+                <input type="date" id="perfDateInput">
+            </div>
+            <div>
+                <label>Date of Submission</label>
+                <input type="date" id="subDateInput">
+            </div>
+        </div>
+
+        <button class="btn-print" onclick="triggerPrint()">🖨️ Save as PDF / Print</button>
+        <p style="font-size:11px; color:#888; text-align:center; margin-top:10px;">Check "Background graphics" in Print Settings!</p>
+    </div>
+
+    <div class="preview-area">
+        <div class="a4-paper">
+            <div class="cover-content">
+                <div class="header-title">AHSANULLAH UNIVERSITY OF SCIENCE AND TECHNOLOGY</div>
+                
+                <div class="logo-wrap">
+                    <img src="aust_logo.svg" alt="AUST Logo">
+                </div>
+
+                <div class="dept-title" id="outDeptName">DEPARTMENT OF ELECTRICAL & ELECTRONIC ENGINEERING</div>
+                <div class="lab-report-tag">LAB REPORT</div>
+
+                <table class="info-table">
+                    <tr>
+                        <td class="col-label">Course No</td>
+                        <td class="col-colon">:</td>
+                        <td class="col-value" id="outCourseCode"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-label">Course Name</td>
+                        <td class="col-colon">:</td>
+                        <td class="col-value" id="outCourseName"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-label" style="padding-top: 15px;">Experiment No</td>
+                        <td class="col-colon" style="padding-top: 15px;">:</td>
+                        <td class="col-value" style="padding-top: 15px;" id="outExpNo"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-label">Experiment Name</td>
+                        <td class="col-colon">:</td>
+                        <td class="col-value" id="outExpName"></td>
+                    </tr>
+                </table>
+
+                <div class="submitted-by-section">
+                    <div class="submitted-by-text">Submitted by</div>
+                    <table class="info-table">
+                        <tr>
+                            <td class="col-label" style="width: 100px;">Name</td>
+                            <td class="col-colon" style="width: 20px;">:</td>
+                            <td class="col-value" id="outStudentName"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Student ID</td>
+                            <td class="col-colon">:</td>
+                            <td class="col-value" id="outStudentId"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Year</td>
+                            <td class="col-colon">:</td>
+                            <td class="col-value" id="outYear"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Semester</td>
+                            <td class="col-colon">:</td>
+                            <td class="col-value" id="outSemester"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Section</td>
+                            <td class="col-colon">:</td>
+                            <td class="col-value" id="outSection"></td>
+                        </tr>
+                        <tr>
+                            <td class="col-label">Group</td>
+                            <td class="col-colon">:</td>
+                            <td class="col-value" id="outGroup"></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <table class="info-table">
+                    <tr>
+                        <td class="col-label">Date of Performance</td>
+                        <td class="col-colon">:</td>
+                        <td class="col-value" id="outPerfDate"></td>
+                    </tr>
+                    <tr>
+                        <td class="col-label">Date of Submission</td>
+                        <td class="col-colon">:</td>
+                        <td class="col-value" id="outSubDate"></td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const courseDatabase = {
+            "EEE 1102": {
+                name: "Electrical Circuits I Lab",
+                experiments: [
+                    { no: "01", title: "Uses of Different Types of Switches" },
+                    { no: "02", title: "Verification of Ohm's Law" },
+                    { no: "03", title: "Investigation of Series DC Circuit and Verification of Kirchhoff's Voltage Law (KVL)" },
+                    { no: "04", title: "Investigation of Parallel DC Circuit and Verification of Kirchhoff's Current Law (KCL)" },
+                    { no: "05", title: "Use of Galvanometer as Ammeter and Voltmeter" },
+                    { no: "06", title: "Introduction to LTspice and Verification of Superposition Theorem Using Simulation" },
+                    { no: "07", title: "Finding Equivalent Resistance Using LTspice Simulation" },
+                    { no: "08", title: "Verification of Thevenin's Theorem and Maximum Power Transfer Theorem" },
+                    { no: "09", title: "Introduction to Oscilloscope Operation" }
+                ]
+            },
+            "EEE 1110": {
+                name: "Structured Programming Lab (C++)",
+                experiments: [
+                    { no: "01", title: "Introduction to C++" },
+                    { no: "02", title: "Variables, Operators and Type Conversions" },
+                    { no: "03", title: "Selection Statements" },
+                    { no: "04", title: "Iteration" },
+                    { no: "05", title: "Functions" },
+                    { no: "06", title: "Arrays" },
+                    { no: "07", title: "Pointers" },
+                    { no: "08", title: "Strings" },
+                    { no: "09", title: "Structures and Classes" },
+                    { no: "10", title: "File I/O and Vector" }
+                ]
+            },
+            "EEE 1202": {
+                name: "Electrical Circuits II Lab",
+                experiments: [
+                    { no: "01", title: "Fundamentals of AC Circuit" },
+                    { no: "02", title: "Determination of Bandwidth and Quality Factor of a Series RLC Circuit" },
+                    { no: "03", title: "Resonance Behavior of a Series RLC Circuit with Variable Capacitance" },
+                    { no: "04", title: "Resonance Behavior of a Parallel RLC Circuit with Variable Capacitance" },
+                    { no: "05", title: "Measurement of AC Power Using Wattmeter" },
+                    { no: "06", title: "Study of a Three-Phase System with Balanced Load" },
+                    { no: "07", title: "Determination of Phase Sequence of a Three-Phase System" },
+                    { no: "08", title: "Study of RC Filter Characteristics" },
+                    { no: "09", title: "Open-Ended Lab" }
+                ]
+            },
+            "EEE 1204": {
+                name: "Electronics I Lab",
+                experiments: [
+                    { no: "01", title: "I-V Characteristics of Diode" },
+                    { no: "02", title: "Diode Rectifier Circuits" },
+                    { no: "03", title: "Clipper and Clamper Circuits" },
+                    { no: "04", title: "Zener Diode Applications" },
+                    { no: "05", title: "Output Characteristics of CE Configuration of BJT" },
+                    { no: "06", title: "BJT Biasing Circuits" },
+                    { no: "07", title: "Frequency Response of CE Amplifier and Measurement of Input/Output Impedance" },
+                    { no: "08", title: "I-V Characteristics of N-Channel Enhancement MOSFET" },
+                    { no: "09", title: "Open-Ended Lab" }
+                ]
+            },
+            "EEE 2104": {
+                name: "Digital Circuit Design Lab",
+                experiments: [
+                    { no: "01", title: "Introduction to Different Digital ICs" },
+                    { no: "02", title: "Combinational Logic and K-Map Minimization" },
+                    { no: "03", title: "Adder Circuit" },
+                    { no: "04", title: "BCD Adder" },
+                    { no: "05", title: "Multiplexers and Demultiplexers" },
+                    { no: "06", title: "Encoders and Decoders" },
+                    { no: "07", title: "Sequential Logic Circuits" },
+                    { no: "08", title: "Shift Registers and Counters" },
+                    { no: "09", title: "CMOS Inverter" },
+                    { no: "10", title: "Emitter-Coupled Logic (ECL)" }
+                ]
+            },
+            "EEE 2106": {
+                name: "Electrical Machines I Lab",
+                experiments: [
+                    { no: "01", title: "Performance Tests on Single-Phase Transformer" },
+                    { no: "02", title: "Transformer Regulation at Different Power Factors" },
+                    { no: "03", title: "Parallel Operation of Transformers" },
+                    { no: "04", title: "Study of Three-Phase Transformers and Efficiency Determination" },
+                    { no: "05", title: "Determination of Circuit Parameters of a Three-Phase Induction Motor" },
+                    { no: "06", title: "Load Characteristics of a Three-Phase Slip-Ring Induction Motor" },
+                    { no: "07", title: "Measuring Synchronous Generator Model Parameters" },
+                    { no: "08", title: "Parallel Operation of Alternators" },
+                    { no: "09", title: "V-Curves and Phasor Diagram of a Synchronous Motor" },
+                    { no: "10", title: "Efficiency of a DC Shunt Generator" },
+                    { no: "11", title: "Speed Control of a DC Shunt Motor" }
+                ]
+            },
+            "EEE 2200": {
+                name: "Electrical Installations",
+                experiments: [
+                    { no: "01", title: "Introduction to AutoCAD" },
+                    { no: "02", title: "Familiarization with Drafting Settings and Drawing with AutoCAD Tools" },
+                    { no: "03", title: "Familiarization with Various types of Drawing Tools and Modify Tools" },
+                    { no: "04", title: "Designing the symbols of Meter, MDB, DB, SB through AutoCAD" },
+                    { no: "05", title: "Designing the symbols of Ceiling Fan, Wall Bracket Light, 5A/10A 2 Pin Socket and Tube Light through AutoCAD" },
+                    { no: "06", title: "Design a flat using commercially available AutoCAD software." },
+                    { no: "07", title: "Inserting symbols in a flat using commercially available AutoCAD software." },
+                    { no: "08", title: "Wiring of a flat using commercially available AutoCAD software." },
+                    { no: "09", title: "Drawing the Circuit Diagram of a flat using commercially available AutoCAD software." }
+                ]
+            },
+            "EEE 2204": {
+                name: "Electronic Circuits - II Lab",
+                experiments: [
+                    { no: "01", title: "Study of Class A Power Amplifier." },
+                    { no: "02", title: "Study of Class B and Class C Power Amplifier" },
+                    { no: "03", title: "Study of a voltage series feedback amplifier circuit." },
+                    { no: "04", title: "Study of a current series feedback amplifier circuit." },
+                    { no: "05", title: "Introduction to OPAMPS." },
+                    { no: "06", title: "Application of OPAMPs." },
+                    { no: "07", title: "Design and study of a -40dB/decade low pass Butterworth filter." },
+                    { no: "08", title: "Study of Wien Bridge Oscillator" }
+                ]
+            },
+            "EEE 2210": {
+                name: "Electronics Simulation Lab",
+                experiments: [
+                    { no: "01", title: "Introduction of semiconductor device in Pspice" },
+                    { no: "02", title: "Diode Analysis" },
+                    { no: "03", title: "Concept of BJT,JFET, MOSFET in Pspice" },
+                    { no: "04", title: "Application of Opamp" },
+                    { no: "05", title: "Application of Opamp (Slew Rate & Gain-Bandwidth Product)" },
+                    { no: "06", title: "ACTIVE FILTER" },
+                    { no: "07", title: "Oscillator Circuit" },
+                    { no: "08", title: "Numerical Differentiation" }
+                ]
+            },
+            "EEE 2212": {
+                name: "Measurement and Instrumentation Lab",
+                experiments: [
+                    { no: "01", title: "Introduction to Thermistor, Light Dependent Resistor (LDR) and Photodiode" },
+                    { no: "02", title: "Phase angle measurement with Polarized logic circuits" },
+                    { no: "03", title: "Study of Basic Differential Amplifier" },
+                    { no: "04", title: "Study of Instrumentation Amplifier" },
+                    { no: "05", title: "Precision Rectifiers in Signal Processing" },
+                    { no: "06", title: "Introduction to 555 timers" },
+                    { no: "07", title: "Introduction to Analog to Digital (A/D) and Digital to Analog (D/A) conversions" },
+                    { no: "08", title: "Introduction to strain gauge, environmental measurements and ultrasonic transmitter/receiver" }
+                ]
+            },
+            "EEE 2226": {
+                name: "Numerical Methods for Engineering Lab",
+                experiments: [
+                    { no: "01", title: "Introduction to MATLAB (Part 1)" },
+                    { no: "02", title: "Applications of MATLAB (Loops & Conditionals)" },
+                    { no: "03", title: "Curve Fitting" },
+                    { no: "04", title: "Solution of Simultaneous Linear Algebraic Equations" },
+                    { no: "05", title: "Solutions to Non-Linear Equations (Bisection & False-Position Method)" },
+                    { no: "06", title: "Solutions to Non-Linear Equations (Newton Raphson & Secant Method)" },
+                    { no: "07", title: "Interpolation" }
+                ]
+            },
+            "EEE 3110": {
+                name: "Microcontroller and Interfacing Lab",
+                experiments: [
+                    { no: "01", title: "Introduction to Arduino Microcontroller and Arduino IDE" },
+                    { no: "02", title: "Introduction to Serial Monitor and Arduino Programming" },
+                    { no: "03", title: "Blinking Internal and External LEDs Using Arduino UNO" },
+                    { no: "04", title: "Interfacing Switches with Arduino UNO" },
+                    { no: "05", title: "Interfacing Switches and Keypad with Arduino UNO" },
+                    { no: "06", title: "Basic Arithmetic Operations and Seven-Segment Display Module" },
+                    { no: "07", title: "ADC and Analog Temperature Sensor Using Arduino" },
+                    { no: "08", title: "Sending Temperature Measurements Using Software UART" },
+                    { no: "09", title: "I²C Communication Protocol and Interfacing a 16×2 LCD with Arduino UNO" }
+                ]
+            },
+            "EEE 3208": {
+                name: "Communication Theory Lab",
+                experiments: [
+                    { no: "01", title: "Study of Amplitude Modulation (AM) and Demodulation [DSB Transmission and Reception]" },
+                    { no: "02", title: "Study of Amplitude Modulation (AM) and Demodulation [SSB Transmission and Reception]" },
+                    { no: "03", title: "Study of Frequency Modulation" },
+                    { no: "04", title: "Study of Signal Sampling and Reconstruction" },
+                    { no: "05", title: "Study of Time Division Multiplexing System" },
+                    { no: "06", title: "Study of FDM (Multiplexer and Demultiplexer)" },
+                    { no: "07", title: "Study of Pulse Code Modulation" },
+                    { no: "08", title: "Study of Communication Using Optical Link" },
+                    { no: "09", title: "Study of Delta Modulation and Demodulation" },
+                    { no: "10", title: "Study of EPABX Trainer System" }
+                ]
+            },
+            "EEE 3218": {
+                name: "Digital Signal Processing (DSP) Lab",
+                experiments: [
+                    { no: "01", title: "Introduction to Basic Signal Generation in MATLAB" },
+                    { no: "02", title: "Discrete-Time Systems and Linear Convolution" },
+                    { no: "03", title: "Circular Convolution and Z-Transform Analysis" },
+                    { no: "04", title: "Discrete Fourier Transform (DFT) & Fast Fourier Transform (FFT) Analysis" },
+                    { no: "05", title: "Design and Implementation of Finite Impulse Response (FIR) Filters" },
+                    { no: "06", title: "Design and Implementation of Infinite Impulse Response (IIR) Filters" }
+                ]
+            },
+            "EEE 4106": {
+                name: "Control System I Lab",
+                experiments: [
+                    { no: "01", title: "Study of the transient response of 1st and 2nd order circuit" },
+                    { no: "02", title: "Design and Transient Response Analysis of PID Controllers" },
+                    { no: "03", title: "Stability Analysis using Root Locus and Bode Plots" },
+                    { no: "04", title: "Industrial Automation using Programmable Logic Controllers (PLC)" }
+                ]
+            },
+            "EEE 4134": {
+                name: "VLSI-I Lab",
+                experiments: [
+                    { no: "01", title: "Combinational Logic Circuit Design in Verilog HDL" },
+                    { no: "02", title: "Digital System Design Using Verilog HDL" },
+                    { no: "03", title: "Sequential System Design Using Verilog HDL" },
+                    { no: "04", title: "CMOS Inverter Design Using Cadence Virtuoso" },
+                    { no: "05", title: "Measuring Different Performance Parameters of a CMOS Inverter" },
+                    { no: "06", title: "DC Sweep and Parametric Sweep in Cadence Virtuoso" },
+                    { no: "07", title: "Custom Layout of an Inverter" },
+                    { no: "08", title: "Post Layout Verification" },
+                    { no: "09", title: "Schematic Driven Layout Design" },
+                    { no: "10", title: "Introduction to Hierarchical Layout Design" }
+                ]
+            },
+            "EEE 4138": {
+                name: "Digital Electronics II Lab",
+                experiments: [
+                    { no: "01", title: "Diode-Resistor Logic (DRL)" },
+                    { no: "02", title: "Transistor-Transistor Logic (TTL) Inverter Characteristics" },
+                    { no: "03", title: "Emitter-Coupled Logic (ECL) Gate Operations and Multivibrators" }
+                ]
+            },
+            "EEE 4154": {
+                name: "Power System II Lab",
+                experiments: [
+                    { no: "01", title: "Study of Power Factor Improvement (PFI) Plant" },
+                    { no: "02", title: "Observation the phase shift in \u0394-Y transformer in a 3-\u03C6 transmission line" },
+                    { no: "03", title: "Determination of Symmetrical Components of current under different fault conditions of a synchronous Generator" },
+                    { no: "04", title: "Measurement of Positive Sequence Impedances for Rotating Machine" },
+                    { no: "05", title: "Measurement of Sequence Impedances and Sub - Transient Reactances for Rotating Machine" },
+                    { no: "06", title: "Study of voltage surge protector" },
+                    { no: "07", title: "Study on voltage instability protection from the mains supply" },
+                    { no: "08", title: "Load Flow Study Using MatLab" },
+                    { no: "09", title: "Introduction to PowerWorld Simulator" },
+                    { no: "10", title: "Load Flow Study Using PowerWorld Simulator" }
+                ]
+            },
+            "EEE 4174": {
+                name: "Microwave Engineering Lab",
+                experiments: [
+                    { no: "01", title: "Introductory Study and basic Measurement of Microwave System" },
+                    { no: "02", title: "Characterization of microwave Oscillator, Introduction to Spectrum Analyzer and Power Measurement techniques" },
+                    { no: "03", title: "Measurement of Standing Wave Ratio, frequency & Wavelength" },
+                    { no: "04", title: "Measurement of unknown Impedance using SMITH chart" },
+                    { no: "05", title: "Study of Waveguide components" },
+                    { no: "06", title: "Inverse square law of Electromagnetic Wave Propagation" },
+                    { no: "07", title: "Study of the Characteristics Features of Various Antennas" },
+                    { no: "08", title: "Introduction and calibration of Vector Network Analyzer" },
+                    { no: "09", title: "Study on Transmission line matching circuit using vector network analyzer" }
+                ]
+            },
+            "EEE 4228": {
+                name: "Power Electronics Lab",
+                experiments: [
+                    { no: "01", title: "Characterizing and Measurement of SCR, TRIAC, Power MOSFET, IGBT" },
+                    { no: "02", title: "Study of Thyristor firing circuit and isolation" },
+                    { no: "03", title: "Study of Single-phase Full wave controlled rectifier" },
+                    { no: "04", title: "Study of AC voltage controller" },
+                    { no: "05", title: "Study of Switching Mode power Supply (SMPS)" },
+                    { no: "06", title: "Study of Using Single-Phase SPWM inverter" },
+                    { no: "07", title: "Study of Stepper Motor and motor driver" },
+                    { no: "08", title: "Study of Three-Phase Full-Wave Full-Controlled Rectifier" }
+                ]
+            },
+            "EEE 4232": {
+                name: "VLSI-II Lab",
+                experiments: [
+                    { no: "00", title: "Overview of VLSI-II Laboratory" },
+                    { no: "01", title: "Introduction to Verilog HDL Programming" },
+                    { no: "02", title: "Introduction to Functional Verification Using Verilog Testbench" },
+                    { no: "03", title: "Modeling Sequential Systems and Finite State Machine Using Verilog HDL" },
+                    { no: "04", title: "Introduction to Unix Shell" },
+                    { no: "05", title: "Synthesis using Genus Synthesis Solution" },
+                    { no: "06", title: "Physical Design Using Innovus Implementation System (Part 1)" },
+                    { no: "07A", title: "Physical Design Using Innovus Implementation System (Part 2)" },
+                    { no: "07B", title: "Static Timing Analysis Using Innovus Implementation System" },
+                    { no: "08", title: "Physical Verification and Exporting GDSII Using Innovus Implementation System" }
+                ]
+            },
+            "EEE 4238": {
+                name: "Biomedical Instrumentation Lab",
+                experiments: [
+                    { no: "01", title: "To study the frequency response of electrode contact impedance" },
+                    { no: "02", title: "Introduction to Nerve Stimulator circuit" },
+                    { no: "03", title: "Introduction to Instrumentation Amplifier" },
+                    { no: "04", title: "Circuit design and breadboard implementation of an optical isolator" },
+                    { no: "05", title: "Introduction to Electrocardiograph (ECG)" },
+                    { no: "06", title: "Introduction to Electromyogram (EMG)" },
+                    { no: "07", title: "Heart rate measurement using Light Plethysmograph" },
+                    { no: "08", title: "ECG Analysis with Matlab" }
+                ]
+            },
+            "EEE 4252": {
+                name: "Power System Protection Lab",
+                experiments: [
+                    { no: "01", title: "Familiarization with different kinds of insulators, fuses, and miniature circuit breakers & Determination of the TCC curve of a rewireable fuse & MCB" },
+                    { no: "02", title: "Study of the performance of an electro-mechanical over current relay and thermal overload relay" },
+                    { no: "03", title: "Study of different components and their functions of an Air Circuit Breaker (ACB)" },
+                    { no: "04", title: "Performance study of different types of substation and trip circuit for a protected line" },
+                    { no: "05", title: "Performance study of directional relay" },
+                    { no: "06", title: "Performance study of an O/C relay, O/C relay co-ordination, advantage of parallel feeder" },
+                    { no: "07", title: "Performance study of a differential relay for the protection of transformer" },
+                    { no: "08", title: "Study of different types of motor protection system" }
+                ]
+            }
+        };
+
+        const ids = ["deptSelect", "deptInput", "yearInput", "semInput", "courseSelect", "courseCodeInput", "courseNameInput", 
+                     "expNoSelect", "expNoInput", "expManualTitleSelect", "expNameInput", 
+                     "studentNameInput", "studentIdInput", "sectionInput", "groupInput", 
+                     "perfDateInput", "subDateInput"];
+        const inputs = {};
+        ids.forEach(id => inputs[id] = document.getElementById(id));
+
+        function extractAcademicInfo(courseCode) {
+            const match = courseCode.match(/[A-Z]+ (\d)(\d)/i);
+            if (match) {
+                const getOrdinal = n => n === '1' ? '1st' : n === '2' ? '2nd' : n === '3' ? '3rd' : n + 'th';
+                inputs.yearInput.value = getOrdinal(match[1]) + " Year";
+                inputs.semInput.value = getOrdinal(match[2]) + " Semester";
+            }
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return "";
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+        }
+
+        function updatePreview() {
+            let deptText = "";
+            if (inputs.deptSelect.value === "EEE") {
+                deptText = "DEPARTMENT OF ELECTRICAL & ELECTRONIC ENGINEERING";
+            } else {
+                let manualDept = inputs.deptInput.value.trim().toUpperCase();
+                deptText = manualDept ? `DEPARTMENT OF ${manualDept}` : "";
+            }
+            document.getElementById('outDeptName').innerText = deptText;
+            
+            document.getElementById('outCourseCode').innerText = inputs.courseCodeInput.value;
+            document.getElementById('outCourseName').innerText = inputs.courseNameInput.value;
+            document.getElementById('outExpNo').innerText = inputs.expNoInput.value;
+            document.getElementById('outExpName').innerText = inputs.expNameInput.value;
+            
+            document.getElementById('outStudentName').innerText = inputs.studentNameInput.value;
+            document.getElementById('outStudentId').innerText = inputs.studentIdInput.value;
+            document.getElementById('outYear').innerText = inputs.yearInput.value;
+            document.getElementById('outSemester').innerText = inputs.semInput.value;
+            document.getElementById('outSection').innerText = inputs.sectionInput.value;
+            document.getElementById('outGroup').innerText = inputs.groupInput.value;
+            
+            document.getElementById('outPerfDate').innerText = formatDate(inputs.perfDateInput.value);
+            document.getElementById('outSubDate').innerText = formatDate(inputs.subDateInput.value);
+        }
+
+        inputs.deptSelect.addEventListener('change', () => {
+            const isOther = (inputs.deptSelect.value === "OTHER");
+            const autoDiv = document.getElementById('autoControlsDiv');
+            const manualDeptDiv = document.getElementById('manualDeptDiv');
+
+            if (isOther) {
+                autoDiv.classList.add('disabled-section');
+                manualDeptDiv.style.display = 'block';
+                
+                inputs.courseCodeInput.value = "";
+                inputs.courseNameInput.value = "";
+                inputs.expNoInput.value = "";
+                inputs.expNameInput.value = "";
+                inputs.yearInput.value = "";
+                inputs.semInput.value = "";
+            } else {
+                autoDiv.classList.remove('disabled-section');
+                manualDeptDiv.style.display = 'none';
+                inputs.courseSelect.dispatchEvent(new Event('change'));
+            }
+            updatePreview();
+        });
+
+        inputs.courseSelect.addEventListener('change', () => {
+            if (inputs.deptSelect.value === "OTHER") return; 
+
+            const course = inputs.courseSelect.value;
+            const data = courseDatabase[course];
+
+            const missingNote = document.getElementById('missingCourseNote');
+            if (!data) {
+                missingNote.style.display = 'block';
+                if (course === "") {
+                    updatePreview();
+                    return;
+                }
+                inputs.courseCodeInput.value = course;
+                inputs.courseNameInput.value = "";
+                inputs.expNoSelect.innerHTML = "";
+                inputs.expManualTitleSelect.innerHTML = "";
+                inputs.expNoInput.value = "";
+                inputs.expNameInput.value = "";
+                extractAcademicInfo(course);
+                updatePreview();
+                return;
+            }
+
+            missingNote.style.display = 'none';
+            inputs.courseCodeInput.value = course;
+            inputs.courseNameInput.value = data.name;
+            extractAcademicInfo(course);
+
+            inputs.expNoSelect.innerHTML = "";
+            inputs.expManualTitleSelect.innerHTML = "";
+
+            data.experiments.forEach(exp => {
+                inputs.expNoSelect.add(new Option(exp.no, exp.no));
+                inputs.expManualTitleSelect.add(new Option(`[Manual ${exp.no}] ${exp.title}`, exp.title));
+            });
+
+            inputs.expNoSelect.dispatchEvent(new Event('change'));
+        });
+
+        inputs.expNoSelect.addEventListener('change', () => {
+            if (inputs.deptSelect.value === "OTHER") return; 
+
+            const idx = inputs.expNoSelect.selectedIndex;
+            if (idx > -1) {
+                inputs.expManualTitleSelect.selectedIndex = idx;
+                inputs.expNameInput.value = courseDatabase[inputs.courseSelect.value].experiments[idx].title;
+                inputs.expNoInput.value = courseDatabase[inputs.courseSelect.value].experiments[idx].no;
+            }
+            updatePreview();
+        });
+
+        inputs.expManualTitleSelect.addEventListener('change', () => {
+            if (inputs.deptSelect.value === "OTHER") return;
+            inputs.expNameInput.value = inputs.expManualTitleSelect.value;
+            updatePreview();
+        });
+
+        ids.forEach(id => {
+            inputs[id].addEventListener('input', updatePreview);
+        });
+
+        function triggerPrint() {
+            const code = inputs.courseCodeInput.value || "Course";
+            const exp = inputs.expNoInput.value || "**";
+            document.title = `${code}- Exp ${exp}- Cover Page [Auto Generated]`;
+            setTimeout(() => {
+                window.print();
+            }, 100); 
+        }
+
+        inputs.deptSelect.dispatchEvent(new Event('change'));
+    </script>
+</body>
+</html>
