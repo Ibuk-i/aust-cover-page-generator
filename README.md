@@ -7,7 +7,7 @@ Whether you are submitting a standard **Lab Report**, an **Open Ended Lab (OEL)*
 
 **Created by:** Adittya Sinha Arko
 
-**[Try the Live Demo Here]()**  
+**[Try the Live Demo Here](https://ibuk-i.github.io/aust-cover-page-generator/)**  
 
 ---
 
