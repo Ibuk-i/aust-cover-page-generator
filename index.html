@@ -153,6 +153,7 @@
         <h3>0. Submission Type</h3>
         <select id="subTypeSelect" style="background:#198754; font-weight:bold; color:white; border:none;">
             <option value="lab" selected>Lab Report (Single)</option>
+            <option value="lab_group">Lab Report (Group)</option>
             <option value="oel">Open Ended Lab (Group)</option>
             <option value="single_assign">Assignment (Single)</option>
             <option value="group_assign">Assignment (Group)</option>
@@ -455,15 +456,6 @@
             "EEE 3110": { name: "Microcontroller and Microprocessor Lab", experiments: [ { no: "00", title: "Introduction to Arduino Microcontroller and Arduino IDE" }, { no: "01", title: "Interface of Digital Input (Push Button) with Arduino" }, { no: "02", title: "Interface of Digital Output (LED) with Arduino" }, { no: "03", title: "Interface of Analog Input (Potentiometer) with Arduino" }, { no: "04", title: "Interface of Analog Output (PWM) with Arduino" }, { no: "05", title: "Serial Communication with Arduino" }, { no: "06", title: "Interface of 16×2 LCD with Arduino" }, { no: "07", title: "Study of Interrupts in Arduino" }, { no: "08", title: "Interface of different sensors with Arduino" }, { no: "09", title: "Application project" } ] },
             "EEE 3208": { name: "Communication Engineering Lab", experiments: [ { no: "01", title: "Study of Amplitude Modulation (AM) and Demodulation [Double Side Band (DSB) Transmission and Reception]" }, { no: "02", title: "Study of Frequency Modulation (FM) and Demodulation [Transmission and Reception]" }, { no: "03", title: "Study of Phase Modulation and Demodulation" }, { no: "04", title: "Study of Pulse Amplitude Modulation (PAM)" }, { no: "05", title: "Study of Pulse Width Modulation (PWM)" }, { no: "06", title: "Study of Pulse Code Modulation (PCM)" }, { no: "07", title: "Study of Digital Modulation Techniques (PSK, DPSK, FSK and BFSK)" }, { no: "08", title: "Study of PCM and DM" } ] },
             "EEE 3218": { name: "Digital Signal Processing Lab", experiments: [ { no: "01", title: "Introduction to Basic Signal Generation in MATLAB" }, { no: "02", title: "Discrete-Time Systems and Difference Equations" }, { no: "03", title: "Analysis of Discrete-Time Linear Systems" }, { no: "04", title: "DFT and FFT" }, { no: "05", title: "Design and Implementation of FIR filters" }, { no: "06", title: "Design and Implementation of IIR filters" }, { no: "07", title: "Multirate Signal Processing" }, { no: "08", title: "Application project" } ] },
-            "EEE 4106": { name: "Control System I Lab", experiments: [ { no: "01", title: "Study of the transient response of Ist and 2nd order circuit" }, { no: "02", title: "Design and Transient Analysis of Lead Compensation Network" }, { no: "03", title: "Design and Transient Analysis of Lag Compensation Network" }, { no: "04", title: "Design and Transient Analysis of Lead-Lag Compensation Network" }, { no: "05", title: "Study of Frequency Response using Bode Plot" }, { no: "06", title: "Study of Frequency Response using Nyquist Plot" }, { no: "07", title: "Design of P, PI and PID Controllers" } ] },
-            "EEE 4134": { name: "VLSI-I Lab", experiments: [ { no: "01", title: "Combinational Logic Circuit Design in Verilog HDL" }, { no: "02", title: "Digital System Design Using Verilog HDL" }, { no: "03", title: "Synchronous Sequential Circuit Design" }, { no: "04", title: "Asynchronous Sequential Circuit Design" }, { no: "05", title: "Finite State Machine Design" }, { no: "06", title: "Dataflow Modeling in VLSI" }, { no: "07", title: "Design of 4-bit ALU" }, { no: "08", title: "Design of Multiplexers and Decoders" } ] },
-            "EEE 4138": { name: "Digital Electronics II Lab", experiments: [ { no: "01", title: "Diode-Resistor Logic (DRL)" }, { no: "02", title: "Transistor-Transistor Logic (TTL) Inverter Characteristics" }, { no: "03", title: "CMOS Logic Gates and their characteristics" }, { no: "04", title: "Study of Flip-Flops (SR, JK, D, T)" }, { no: "05", title: "Design of Binary Counters" }, { no: "06", title: "Design of Shift Registers" }, { no: "07", title: "Design of Asynchronous Counters" }, { no: "08", title: "Design of Synchronous Counters" } ] },
-            "EEE 4154": { name: "Power System II Lab", experiments: [ { no: "01", title: "Study of Power Factor Improvement (PFI) Plant" }, { no: "02", title: "Observation the phase shift in Δ-Y and Y-Δ Transformer connections" }, { no: "03", title: "Study of Transmission Line Model" }, { no: "04", title: "Study of Protection Relays" }, { no: "05", title: "Study of Fuse, Circuit Breaker and Isolator" }, { no: "06", title: "Study of Bus Bars and Insulators" }, { no: "07", title: "Study of Grounding and Earthing" } ] },
-            "EEE 4174": { name: "Microwave Engineering Lab", experiments: [ { no: "01", title: "Introductory Study and basic Measurement of Microwave System" }, { no: "02", title: "Characterization of Microwave Passive Components" }, { no: "03", title: "Study of Microwave Antenna" }, { no: "04", title: "Study of Standing Wave Ratio (SWR) and Impedance Measurement" }, { no: "05", title: "Study of Microwave Diode" }, { no: "06", title: "Study of Microwave Power Meter" }, { no: "07", title: "Study of Waveguide Coupling and Cavity Resonator" } ] },
-            "EEE 4228": { name: "Power Electronics Lab", experiments: [ { no: "01", title: "Characterizing and Measurement of SCR, TRIAC, Power MOSFET, IGBT" }, { no: "02", title: "Study of Thyristor Firing Circuits" }, { no: "03", title: "Study of Uncontrolled Rectifiers" }, { no: "04", title: "Study of Controlled Rectifiers" }, { no: "05", title: "Study of Choppers" }, { no: "06", title: "Study of Inverters" }, { no: "07", title: "Study of AC Voltage Controllers" } ] },
-            "EEE 4232": { name: "VLSI-II Lab", experiments: [ { no: "00", title: "Overview of VLSI-II Laboratory" }, { no: "01", title: "Introduction to Verilog HDL Programming" }, { no: "02", title: "Behavioral Modeling in Verilog HDL" }, { no: "03", title: "RTL Design and Synthesis" }, { no: "04", title: "Design Simulation and Verification" }, { no: "05", title: "ASIC Design Flow" }, { no: "06", title: "Physical Design and Layout" }, { no: "07", title: "Testing and Verification" } ] },
-            "EEE 4238": { name: "Biomedical Instrumentation Lab", experiments: [ { no: "01", title: "To study the frequency response of electrode contact impedance" }, { no: "02", title: "Introduction to ECG signal acquisition and analysis" }, { no: "03", title: "Introduction to EEG signal acquisition and analysis" }, { no: "04", title: "Study of EMG signal acquisition and analysis" }, { no: "05", title: "Design of Biomedical Signal Amplifier" }, { no: "06", title: "Study of Biomedical Signal Filtering" }, { no: "07", title: "Design of ECG Monitor" } ] },
-            "EEE 4252": { name: "Power System Protection Lab", experiments: [ { no: "01", title: "Familiarization with different kinds of insulators, fuses, and miniature circuit breakers & Determination of earth fault loop impedance (EFLI)" }, { no: "02", title: "Study of different Protection Relays" }, { no: "03", title: "Study of Differential Protection Scheme" }, { no: "04", title: "Study of Overcurrent Protection Scheme" }, { no: "05", title: "Study of Distance Protection Scheme" }, { no: "06", title: "Study of Pilot Wire Protection Scheme" }, { no: "07", title: "Study of Carrier-Aided Protection Scheme" } ] },
         };
 
         const ids = ["subTypeSelect", "deptSelect", "deptInput", "yearInput", "semInput", "courseSelect", "courseCodeInput", "courseNameInput", 
@@ -492,14 +484,15 @@
 
         function applyDefaultLayoutForType() {
             const subType = inputs.subTypeSelect.value;
-            const isWideLeft = (subType === 'oel' || subType === 'group_assign');
+            const isWideLeft = (subType === 'oel' || subType === 'group_assign' || subType === 'lab_group');
             inputs.marginTopSlider.value = 60;
             inputs.marginLeftSlider.value = isWideLeft ? 0 : 35;
         }
 
         function updatePresetState() {
             const isOther = (inputs.deptSelect.value === "OTHER");
-            const isAssign = inputs.subTypeSelect.value.includes('assign');
+            const subType = inputs.subTypeSelect.value;
+            const isAssign = subType.includes('assign');
             const autoDiv = document.getElementById('autoControlsDiv');
             const manualDeptDiv = document.getElementById('manualDeptDiv');
 
@@ -514,8 +507,8 @@
 
         function updatePreview() {
             const subType = inputs.subTypeSelect.value;
-            const isLab = (subType === 'lab');
-            const isGroup = (subType === 'oel' || subType === 'group_assign');
+            const isLabBase = (subType === 'lab' || subType === 'lab_group');
+            const isGroup = (subType === 'oel' || subType === 'group_assign' || subType === 'lab_group');
             const isSingleAssign = (subType === 'single_assign');
             
             // Layout Slider Logic
@@ -526,7 +519,7 @@
             document.getElementById('submitSectionWrapper').style.marginLeft = mLeft;
             document.getElementById('submitSectionWrapper').style.marginTop = mTop;
             
-            // Toggles for Lab vs Non-Lab
+            // Toggles for Lab vs Non-Lab fields
             const manualExpNoWrapper = document.getElementById('manualExpNoWrapper');
             const inputExpNoWrapper = document.getElementById('inputExpNoWrapper');
             const datesHeader = document.getElementById('datesHeader');
@@ -536,7 +529,7 @@
             const showPerfDate = inputs.showPerfDateCb.checked;
             const showSubDate = inputs.showSubDateCb.checked;
 
-            if (isLab) {
+            if (isLabBase) {
                 manualExpNoWrapper.style.display = 'block';
                 inputExpNoWrapper.style.display = 'block';
                 previewExpNoRow.style.display = 'table-row';
@@ -552,22 +545,23 @@
 
             // Headings & Labels based on Type
             const typeLabel = document.getElementById('typeTitleTag');
-            const expNameLabel = document.getElementById('labelExpName');
+            const expNameLabel = document.getElementById('labelExpNo').parentNode.nextElementSibling.firstElementChild; 
             const labelExpNameInput = document.getElementById('labelExpNameInput');
 
-            if(subType === 'lab') {
+            if(subType === 'lab' || subType === 'lab_group') {
                 typeLabel.innerText = "LAB REPORT";
-                expNameLabel.innerText = "Experiment Name";
+                document.getElementById('labelExpNo').innerText = "Experiment No";
+                document.getElementById('labelExpName').innerText = "Experiment Name";
                 labelExpNameInput.innerText = "Exp Name";
                 inputs.expNameInput.placeholder = "Exp Name";
             } else if(subType === 'oel') {
                 typeLabel.innerText = "OPEN ENDED LAB REPORT";
-                expNameLabel.innerText = "Title";
+                document.getElementById('labelExpName').innerText = "Title";
                 labelExpNameInput.innerText = "Title";
                 inputs.expNameInput.placeholder = "Open Ended Lab Title";
             } else if(subType === 'single_assign' || subType === 'group_assign') {
                 typeLabel.innerText = "ASSIGNMENT";
-                expNameLabel.innerText = "Title";
+                document.getElementById('labelExpName').innerText = "Title";
                 labelExpNameInput.innerText = "Title";
                 inputs.expNameInput.placeholder = "Assignment Title";
             }
@@ -736,6 +730,8 @@
             let title = "";
             if (subType === 'lab') {
                 title = `${code}- Exp ${exp}`;
+            } else if (subType === 'lab_group') {
+                title = inputs.showGroupNoCb.checked ? `${code}- Lab Group ${gNo}- Exp ${exp}` : `${code}- Lab Group- Exp ${exp}`;
             } else if (subType === 'oel') {
                 title = inputs.showGroupNoCb.checked ? `${code}- OEL- Group ${gNo}` : `${code}- OEL`;
             } else if (subType === 'single_assign') {
