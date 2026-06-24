@@ -165,7 +165,12 @@
             <input type="range" id="marginTopSlider" min="0" max="250" value="40" style="margin-bottom: 15px;">
 
             <label>Submitted By - Left Position (<span id="marginLeftVal">35</span>%)</label>
-            <input type="range" id="marginLeftSlider" min="0" max="60" value="35">
+            <input type="range" id="marginLeftSlider" min="0" max="60" value="35" style="margin-bottom: 15px;">
+
+            <div id="singleLabelWidthCtrl">
+                <label>Single Details - Label Width (<span id="labelWidthVal">100</span>px)</label>
+                <input type="range" id="labelWidthSlider" min="50" max="200" value="100">
+            </div>
         </div>
         
         <h3>1. Department</h3>
@@ -364,32 +369,32 @@
                     
                     <table class="info-table" id="singleSubmitTable">
                         <tr>
-                            <td class="col-label" style="width: 100px;">Name</td>
+                            <td class="col-label single-lbl" style="width: 100px;">Name</td>
                             <td class="col-colon" style="width: 20px;">:</td>
                             <td class="col-value" id="outStudentName"></td>
                         </tr>
                         <tr>
-                            <td class="col-label">Student ID</td>
+                            <td class="col-label single-lbl">Student ID</td>
                             <td class="col-colon">:</td>
                             <td class="col-value" id="outStudentId"></td>
                         </tr>
                         <tr>
-                            <td class="col-label">Year</td>
+                            <td class="col-label single-lbl">Year</td>
                             <td class="col-colon">:</td>
                             <td class="col-value" id="outYear"></td>
                         </tr>
                         <tr>
-                            <td class="col-label">Semester</td>
+                            <td class="col-label single-lbl">Semester</td>
                             <td class="col-colon">:</td>
                             <td class="col-value" id="outSemester"></td>
                         </tr>
                         <tr>
-                            <td class="col-label">Section</td>
+                            <td class="col-label single-lbl">Section</td>
                             <td class="col-colon">:</td>
                             <td class="col-value" id="outSection"></td>
                         </tr>
                         <tr id="previewSingleGroupRow">
-                            <td class="col-label">Group</td>
+                            <td class="col-label single-lbl">Group</td>
                             <td class="col-colon">:</td>
                             <td class="col-value" id="outGroup"></td>
                         </tr>
@@ -456,12 +461,21 @@
             "EEE 3110": { name: "Microcontroller and Microprocessor Lab", experiments: [ { no: "00", title: "Introduction to Arduino Microcontroller and Arduino IDE" }, { no: "01", title: "Interface of Digital Input (Push Button) with Arduino" }, { no: "02", title: "Interface of Digital Output (LED) with Arduino" }, { no: "03", title: "Interface of Analog Input (Potentiometer) with Arduino" }, { no: "04", title: "Interface of Analog Output (PWM) with Arduino" }, { no: "05", title: "Serial Communication with Arduino" }, { no: "06", title: "Interface of 16×2 LCD with Arduino" }, { no: "07", title: "Study of Interrupts in Arduino" }, { no: "08", title: "Interface of different sensors with Arduino" }, { no: "09", title: "Application project" } ] },
             "EEE 3208": { name: "Communication Engineering Lab", experiments: [ { no: "01", title: "Study of Amplitude Modulation (AM) and Demodulation [Double Side Band (DSB) Transmission and Reception]" }, { no: "02", title: "Study of Frequency Modulation (FM) and Demodulation [Transmission and Reception]" }, { no: "03", title: "Study of Phase Modulation and Demodulation" }, { no: "04", title: "Study of Pulse Amplitude Modulation (PAM)" }, { no: "05", title: "Study of Pulse Width Modulation (PWM)" }, { no: "06", title: "Study of Pulse Code Modulation (PCM)" }, { no: "07", title: "Study of Digital Modulation Techniques (PSK, DPSK, FSK and BFSK)" }, { no: "08", title: "Study of PCM and DM" } ] },
             "EEE 3218": { name: "Digital Signal Processing Lab", experiments: [ { no: "01", title: "Introduction to Basic Signal Generation in MATLAB" }, { no: "02", title: "Discrete-Time Systems and Difference Equations" }, { no: "03", title: "Analysis of Discrete-Time Linear Systems" }, { no: "04", title: "DFT and FFT" }, { no: "05", title: "Design and Implementation of FIR filters" }, { no: "06", title: "Design and Implementation of IIR filters" }, { no: "07", title: "Multirate Signal Processing" }, { no: "08", title: "Application project" } ] },
+            "EEE 4106": { name: "Control System I Lab", experiments: [ { no: "01", title: "Study of the transient response of Ist and 2nd order circuit" }, { no: "02", title: "Design and Transient Analysis of Lead Compensation Network" }, { no: "03", title: "Design and Transient Analysis of Lag Compensation Network" }, { no: "04", title: "Design and Transient Analysis of Lead-Lag Compensation Network" }, { no: "05", title: "Study of Frequency Response using Bode Plot" }, { no: "06", title: "Study of Frequency Response using Nyquist Plot" }, { no: "07", title: "Design of P, PI and PID Controllers" } ] },
+            "EEE 4134": { name: "VLSI-I Lab", experiments: [ { no: "01", title: "Combinational Logic Circuit Design in Verilog HDL" }, { no: "02", title: "Digital System Design Using Verilog HDL" }, { no: "03", title: "Synchronous Sequential Circuit Design" }, { no: "04", title: "Asynchronous Sequential Circuit Design" }, { no: "05", title: "Finite State Machine Design" }, { no: "06", title: "Dataflow Modeling in VLSI" }, { no: "07", title: "Design of 4-bit ALU" }, { no: "08", title: "Design of Multiplexers and Decoders" } ] },
+            "EEE 4138": { name: "Digital Electronics II Lab", experiments: [ { no: "01", title: "Diode-Resistor Logic (DRL)" }, { no: "02", title: "Transistor-Transistor Logic (TTL) Inverter Characteristics" }, { no: "03", title: "CMOS Logic Gates and their characteristics" }, { no: "04", title: "Study of Flip-Flops (SR, JK, D, T)" }, { no: "05", title: "Design of Binary Counters" }, { no: "06", title: "Design of Shift Registers" }, { no: "07", title: "Design of Asynchronous Counters" }, { no: "08", title: "Design of Synchronous Counters" } ] },
+            "EEE 4154": { name: "Power System II Lab", experiments: [ { no: "01", title: "Study of Power Factor Improvement (PFI) Plant" }, { no: "02", title: "Observation the phase shift in Δ-Y and Y-Δ Transformer connections" }, { no: "03", title: "Study of Transmission Line Model" }, { no: "04", title: "Study of Protection Relays" }, { no: "05", title: "Study of Fuse, Circuit Breaker and Isolator" }, { no: "06", title: "Study of Bus Bars and Insulators" }, { no: "07", title: "Study of Grounding and Earthing" } ] },
+            "EEE 4174": { name: "Microwave Engineering Lab", experiments: [ { no: "01", title: "Introductory Study and basic Measurement of Microwave System" }, { no: "02", title: "Characterization of Microwave Passive Components" }, { no: "03", title: "Study of Microwave Antenna" }, { no: "04", title: "Study of Standing Wave Ratio (SWR) and Impedance Measurement" }, { no: "05", title: "Study of Microwave Diode" }, { no: "06", title: "Study of Microwave Power Meter" }, { no: "07", title: "Study of Waveguide Coupling and Cavity Resonator" } ] },
+            "EEE 4228": { name: "Power Electronics Lab", experiments: [ { no: "01", title: "Characterizing and Measurement of SCR, TRIAC, Power MOSFET, IGBT" }, { no: "02", title: "Study of Thyristor Firing Circuits" }, { no: "03", title: "Study of Uncontrolled Rectifiers" }, { no: "04", title: "Study of Controlled Rectifiers" }, { no: "05", title: "Study of Choppers" }, { no: "06", title: "Study of Inverters" }, { no: "07", title: "Study of AC Voltage Controllers" } ] },
+            "EEE 4232": { name: "VLSI-II Lab", experiments: [ { no: "00", title: "Overview of VLSI-II Laboratory" }, { no: "01", title: "Introduction to Verilog HDL Programming" }, { no: "02", title: "Behavioral Modeling in Verilog HDL" }, { no: "03", title: "RTL Design and Synthesis" }, { no: "04", title: "Design Simulation and Verification" }, { no: "05", title: "ASIC Design Flow" }, { no: "06", title: "Physical Design and Layout" }, { no: "07", title: "Testing and Verification" } ] },
+            "EEE 4238": { name: "Biomedical Instrumentation Lab", experiments: [ { no: "01", title: "To study the frequency response of electrode contact impedance" }, { no: "02", title: "Introduction to ECG signal acquisition and analysis" }, { no: "03", title: "Introduction to EEG signal acquisition and analysis" }, { no: "04", title: "Study of EMG signal acquisition and analysis" }, { no: "05", title: "Design of Biomedical Signal Amplifier" }, { no: "06", title: "Study of Biomedical Signal Filtering" }, { no: "07", title: "Design of ECG Monitor" } ] },
+            "EEE 4252": { name: "Power System Protection Lab", experiments: [ { no: "01", title: "Familiarization with different kinds of insulators, fuses, and miniature circuit breakers & Determination of earth fault loop impedance (EFLI)" }, { no: "02", title: "Study of different Protection Relays" }, { no: "03", title: "Study of Differential Protection Scheme" }, { no: "04", title: "Study of Overcurrent Protection Scheme" }, { no: "05", title: "Study of Distance Protection Scheme" }, { no: "06", title: "Study of Pilot Wire Protection Scheme" }, { no: "07", title: "Study of Carrier-Aided Protection Scheme" } ] },
         };
 
         const ids = ["subTypeSelect", "deptSelect", "deptInput", "yearInput", "semInput", "courseSelect", "courseCodeInput", "courseNameInput", 
                      "expNoSelect", "expNoInput", "expManualTitleSelect", "expNameInput", 
                      "studentNameInput", "studentIdInput", "sectionInput", "groupInput", "showGroupNoCb", "showPerfDateCb", "showSubDateCb",
-                     "marginTopSlider", "marginLeftSlider",
+                     "marginTopSlider", "marginLeftSlider", "labelWidthSlider",
                      "gName1", "gId1", "gName2", "gId2", "gName3", "gId3", "gName4", "gId4", "gName5", "gId5", "gName6", "gId6", "gName7", "gId7",
                      "perfDateInput", "subDateInput"];
         const inputs = {};
@@ -485,8 +499,9 @@
         function applyDefaultLayoutForType() {
             const subType = inputs.subTypeSelect.value;
             const isWideLeft = (subType === 'oel' || subType === 'group_assign' || subType === 'lab_group');
-            inputs.marginTopSlider.value = 60;
+            inputs.marginTopSlider.value = 40;
             inputs.marginLeftSlider.value = isWideLeft ? 0 : 35;
+            inputs.labelWidthSlider.value = 100;
         }
 
         function updatePresetState() {
@@ -518,6 +533,19 @@
             document.getElementById('marginLeftVal').innerText = inputs.marginLeftSlider.value;
             document.getElementById('submitSectionWrapper').style.marginLeft = mLeft;
             document.getElementById('submitSectionWrapper').style.marginTop = mTop;
+            
+            // Label Width control display check
+            const singleLabelWidthCtrl = document.getElementById('singleLabelWidthCtrl');
+            if (!isGroup) {
+                singleLabelWidthCtrl.style.display = 'block';
+                const lblWidth = inputs.labelWidthSlider.value + 'px';
+                document.getElementById('labelWidthVal').innerText = inputs.labelWidthSlider.value;
+                document.querySelectorAll('.single-lbl').forEach(el => {
+                    el.style.width = lblWidth;
+                });
+            } else {
+                singleLabelWidthCtrl.style.display = 'none';
+            }
             
             // Toggles for Lab vs Non-Lab fields
             const manualExpNoWrapper = document.getElementById('manualExpNoWrapper');
