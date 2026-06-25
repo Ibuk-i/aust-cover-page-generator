@@ -1,72 +1,96 @@
-# aust-cover-page-generator
-# 📄 AUST Cover Page Generator
+# AUST Cover Page Generator
 
-A fast, fully automated, and perfectly formatted cover page generator designed specifically for students at Ahsanullah University of Science and Technology (AUST). 
+A fast, fully automated cover page generator built specifically for students at Ahsanullah University of Science and Technology (AUST).
 
-Whether you are submitting a standard **Lab Report**, an **Open Ended Lab (OEL)**, or a **Theory Assignment** (Single or Group), this tool instantly adapts the layout and formatting to match official guidelines. It runs entirely in your browser, requires no internet connection after the initial load, and features a massive built-in database of the EEE department curriculum.
+It can generate properly formatted cover pages for lab reports, open ended labs (OEL), and theory assignments, whether they are single or group submissions. Everything runs in your browser, so after the first load it works offline and does not need any backend or database.
 
-**Created by:** Adittya Sinha Arko
+Created by Adittya Sinha Arko.
 
-**[Try the Live Demo Here](https://ibuk-i.github.io/aust-cover-page-generator/)**  
-
----
+[Try the Live Demo Here](https://ibuk-i.github.io/aust-cover-page-generator/)
 
 ## Key Features
 
-* **Multi-Format Support:** Instantly switch between Lab Reports, Open Ended Labs, and Assignments. The tool automatically changes labels (e.g., "Experiment Name" becomes "Title") and adjusts the layout.
-* **Dynamic Group Tables:** Automatically transforms the "Submitted by" section into a clean, professional multi-member table for group assignments and OELs (supports up to 7 members).
-* **📐 Custom Layout Sliders:** Includes real-time sliders to manually adjust the top spacing and left/right positioning of the "Submitted by" section, ensuring perfect alignment no matter how long your title is.
-* **Massive Course Database:** Automatically fills in Course Codes, Course Names, and exact Experiment Titles from official lab manuals for EEE courses (1st to 4th Year).
-* **Smart File Naming:** Automatically names your downloaded PDF based on your submission type (e.g., `EEE 2105- Assignment- 00724105131.pdf` or `EEE 2200- OEL- Group 06.pdf`).
-* **100% Private & Serverless:** No backends or databases. All code runs locally in your browser. Your IDs and data are never tracked or saved.
+- **Multi-format support** — Switch between lab reports, open ended labs, and assignments. The layout updates automatically to match the selected submission type.
+- **Dynamic group tables** — Converts the "Submitted by" section into a clean table for group submissions, supporting up to 7 members.
+- **Custom layout sliders** — Adjust top spacing and left/right position in real time to align the page perfectly.
+- **Course database** — Automatically fills in course codes, course names, and experiment titles from the EEE department lab manuals for 1st to 4th year.
+- **Smart file naming** — Downloads the PDF with a filename based on the submission type.
+- **Persistent autofill** — Saves your name, student ID, section, group, and member details in your browser using LocalStorage.
+- **Private and serverless** — All code runs locally in your browser. Nothing is sent to a server.
 
----
+## How to Use
 
-## How to Use It
+The generator has a dark-mode sidebar. Anything you change on the left updates the live printable A4 preview on the right.
 
-The generator features a clean, dark-mode sidebar. Everything you change on the left instantly updates the live, printable A4 preview on the right.
+### 1. Choose the submission type
 
-### 0. Submission Type & Layout Adjustments
-* **Type:** Choose between Lab Report (Single), Open Ended Lab (Group), Assignment (Single), or Assignment (Group). 
-* **Sliders:** If you are doing a single submission, use the Top Spacing and Left Position sliders to drag the "Submitted by" block to the perfect spot on the page.
+Pick one of these options:
 
-### 1. Department
-* **EEE (Default):** Keeps the automated preset system turned on.
-* **Other Department:** Grays out the EEE presets and unlocks a blank text box so students from CE, ME, CSE, etc., can type their own department name.
+- Lab Report (Single)
+- Open Ended Lab (Group)
+- Assignment (Single)
+- Assignment (Group)
 
-### 2. Automated Presets
-* **Course Preset:** Select your Year/Semester and Course.
-* **Experiment No:** Automatically populates a list of all official experiments from that specific course's lab manual.
-* ** Shift / Override Title:** If teacher skips an experiment or changes the order, use this warning-colored dropdown to swap the title without messing up your manual numbering.
+For single submissions, you can use the top spacing and left position sliders to fine-tune the placement of the "Submitted by" section.
 
-### 3. Final Print Values (Editable)
-If a course isn't in the database or you have a custom assignment topic, type directly into these text boxes (**Course Code, Course Name, Exp No, Exp Name**). What you type here is exactly what gets printed.
+### 2. Select the department
 
-### 4. Student Identity & Term
-* **Single vs. Group:** Depending on your Submission Type, this section will either ask for your individual Name/ID or provide up to 7 rows for group members.
-* **Group Checkbox:** You can toggle whether the "Group No" line actually prints on the page.
+- **EEE (default)** keeps the built-in preset system enabled.
+- **Other departments** disable the EEE presets and let you enter a custom department name.
 
-### 5. Dates (Toggleable)
-Use the pop-up calendars to select your Performance and Submission dates. 
-* **Show/Hide:** If your assignment doesn't require a Performance Date or Submission Date, simply uncheck the "Show" boxes to remove those lines from the page completely.
+### 3. Use the automated presets
 
----
+Select your year/semester and course, then choose the experiment number. The generator will automatically fill in the matching experiment title from the course database.
 
-## Printing & Saving as PDF
+If a teacher changes the order or skips an experiment, you can use the override option to replace the title manually.
 
-When you are ready, click the big green **"Save as PDF / Print"** button at the bottom of the sidebar. From PC, set your destination to "Save as PDF" and save the pdf. For mobile, touch the 3 dot in the upper right section> select "Save as PDF" and your pdf is saved according to your allocated path.
+### 4. Edit the final print values
 
-### CRITICAL PRINT SETTING:
-When your browser's print menu pops up, you **MUST** click on "More Settings" and check the box that says **"Background graphics"**. If you do not check this box, the browser will strip the green colors out of the AUST logo to save printer ink!
+If a course is missing from the database or you want to use a custom assignment topic, you can type directly into the final fields for:
 
----
+- Course Code
+- Course Name
+- Experiment Number
+- Experiment Name
 
-## How to Run Locally
+Whatever you type here is exactly what will appear in the final output.
 
-If you want to run this on your own machine without using the live link:
-1. Clone or download this repository.
-2. Ensure both `index.html` and `aust_logo.svg` are in the same folder.
-3. Simply double-click `index.html` to open it in any modern web browser (Chrome, Edge, Firefox, Brave, Safari).
-##  Contributing
+### 5. Enter student details
 
-If you notice a missing course or an updated lab manual, feel free to fork the repo, add the new course to the `courseDatabase` object inside the `index.html` file, and submit a Pull Request.
+Your details are saved automatically as you type, so you usually only need to enter them once.
+
+Depending on the submission type, this section will either show:
+
+- your individual name and ID, or
+- up to 7 group member rows
+
+You can also choose whether the "Group No" line should appear on the page.
+
+### 6. Set the dates
+
+Use the date pickers to set your performance and submission dates.
+
+If a date is not needed, simply turn off its Show option to remove it from the page.
+
+## Saving as PDF
+
+When you're ready, click **Save as PDF / Print** at the bottom of the sidebar.
+
+- On desktop, choose **Save as PDF** from the print destination.
+- On mobile, open the browser menu and select **Save as PDF**.
+
+### Important print setting
+
+In the browser print dialog, open **More Settings** and enable **Background graphics**. Without this, the green colors in the AUST logo may not print correctly.
+
+## Run Locally
+
+To run the generator on your own computer:
+
+1. Clone or download the repository.
+2. Make sure `index.html` and `aust_logo.svg` are in the same folder.
+3. Open `index.html` in a modern browser such as Chrome, Edge, Firefox, Brave, or Safari.
+
+## Contributing
+
+If you notice a missing course or an updated lab manual, feel free to fork the repository, add the new course to the `courseDatabase` object inside `index.html`, and open a pull request.
