@@ -483,6 +483,34 @@
         const inputs = {};
         ids.forEach(id => inputs[id] = document.getElementById(id));
 
+        // --- LOCAL STORAGE FUNCTIONALITIES ---
+        // Fields we want to permanently save to the browser
+        const fieldsToPersist = [
+            "studentNameInput", "studentIdInput", "sectionInput", "groupInput",
+            "gName1", "gId1", "gName2", "gId2", "gName3", "gId3", 
+            "gName4", "gId4", "gName5", "gId5", "gName6", "gId6", "gName7", "gId7"
+        ];
+
+        function savePersonalDataToStorage() {
+            fieldsToPersist.forEach(id => {
+                if (inputs[id]) {
+                    localStorage.setItem('cover_gen_' + id, inputs[id].value);
+                }
+            });
+        }
+
+        function loadPersonalDataFromStorage() {
+            fieldsToPersist.forEach(id => {
+                if (inputs[id]) {
+                    const savedValue = localStorage.getItem('cover_gen_' + id);
+                    if (savedValue !== null) {
+                        inputs[id].value = savedValue;
+                    }
+                }
+            });
+        }
+        // -------------------------------------
+
         function extractAcademicInfo(courseCode) {
             const match = courseCode.match(/[A-Z]+ (\d)(\d)/i);
             if (match) {
@@ -735,8 +763,16 @@
         });
 
         ids.forEach(id => {
-            inputs[id].addEventListener('input', updatePreview);
-            if(id === "showGroupNoCb" || id === "showPerfDateCb" || id === "showSubDateCb") inputs[id].addEventListener('change', updatePreview);
+            inputs[id].addEventListener('input', () => {
+                // If the input belongs to personal profile details, save it instantly
+                if (fieldsToPersist.includes(id)) {
+                    savePersonalDataToStorage();
+                }
+                updatePreview();
+            });
+            if(id === "showGroupNoCb" || id === "showPerfDateCb" || id === "showSubDateCb") {
+                inputs[id].addEventListener('change', updatePreview);
+            }
         });
 
         function triggerPrint() {
@@ -763,6 +799,8 @@
             setTimeout(() => { window.print(); }, 100); 
         }
 
+        // Initialize App
+        loadPersonalDataFromStorage(); // Load saved profile info before updating layout/preview
         applyDefaultLayoutForType();
         inputs.subTypeSelect.dispatchEvent(new Event('change'));
         inputs.deptSelect.dispatchEvent(new Event('change'));
