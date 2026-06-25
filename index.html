@@ -153,6 +153,7 @@
         <h3>0. Submission Type</h3>
         <select id="subTypeSelect" style="background:#198754; font-weight:bold; color:white; border:none;">
             <option value="lab" selected>Lab Report (Single)</option>
+            <option value="lab_group">Lab Report (Group)</option>
             <option value="oel">Open Ended Lab (Group)</option>
             <option value="single_assign">Assignment (Single)</option>
             <option value="group_assign">Assignment (Group)</option>
@@ -164,7 +165,12 @@
             <input type="range" id="marginTopSlider" min="0" max="250" value="40" style="margin-bottom: 15px;">
 
             <label>Submitted By - Left Position (<span id="marginLeftVal">35</span>%)</label>
-            <input type="range" id="marginLeftSlider" min="0" max="60" value="35">
+            <input type="range" id="marginLeftSlider" min="0" max="60" value="35" style="margin-bottom: 15px;">
+
+            <div id="singleLabelWidthCtrl">
+                <label>Single Details - Label Width (<span id="labelWidthVal">100</span>px)</label>
+                <input type="range" id="labelWidthSlider" min="50" max="200" value="100">
+            </div>
         </div>
         
         <h3>1. Department</h3>
@@ -363,32 +369,32 @@
                     
                     <table class="info-table" id="singleSubmitTable">
                         <tr>
-                            <td class="col-label" style="width: 100px;">Name</td>
+                            <td class="col-label single-lbl" style="width: 100px;">Name</td>
                             <td class="col-colon" style="width: 20px;">:</td>
                             <td class="col-value" id="outStudentName"></td>
                         </tr>
                         <tr>
-                            <td class="col-label">Student ID</td>
+                            <td class="col-label single-lbl">Student ID</td>
                             <td class="col-colon">:</td>
                             <td class="col-value" id="outStudentId"></td>
                         </tr>
                         <tr>
-                            <td class="col-label">Year</td>
+                            <td class="col-label single-lbl">Year</td>
                             <td class="col-colon">:</td>
                             <td class="col-value" id="outYear"></td>
                         </tr>
                         <tr>
-                            <td class="col-label">Semester</td>
+                            <td class="col-label single-lbl">Semester</td>
                             <td class="col-colon">:</td>
                             <td class="col-value" id="outSemester"></td>
                         </tr>
                         <tr>
-                            <td class="col-label">Section</td>
+                            <td class="col-label single-lbl">Section</td>
                             <td class="col-colon">:</td>
                             <td class="col-value" id="outSection"></td>
                         </tr>
                         <tr id="previewSingleGroupRow">
-                            <td class="col-label">Group</td>
+                            <td class="col-label single-lbl">Group</td>
                             <td class="col-colon">:</td>
                             <td class="col-value" id="outGroup"></td>
                         </tr>
@@ -469,7 +475,7 @@
         const ids = ["subTypeSelect", "deptSelect", "deptInput", "yearInput", "semInput", "courseSelect", "courseCodeInput", "courseNameInput", 
                      "expNoSelect", "expNoInput", "expManualTitleSelect", "expNameInput", 
                      "studentNameInput", "studentIdInput", "sectionInput", "groupInput", "showGroupNoCb", "showPerfDateCb", "showSubDateCb",
-                     "marginTopSlider", "marginLeftSlider",
+                     "marginTopSlider", "marginLeftSlider", "labelWidthSlider",
                      "gName1", "gId1", "gName2", "gId2", "gName3", "gId3", "gName4", "gId4", "gName5", "gId5", "gName6", "gId6", "gName7", "gId7",
                      "perfDateInput", "subDateInput"];
         const inputs = {};
@@ -492,14 +498,16 @@
 
         function applyDefaultLayoutForType() {
             const subType = inputs.subTypeSelect.value;
-            const isWideLeft = (subType === 'oel' || subType === 'group_assign');
-            inputs.marginTopSlider.value = 60;
+            const isWideLeft = (subType === 'oel' || subType === 'group_assign' || subType === 'lab_group');
+            inputs.marginTopSlider.value = 40;
             inputs.marginLeftSlider.value = isWideLeft ? 0 : 35;
+            inputs.labelWidthSlider.value = 100;
         }
 
         function updatePresetState() {
             const isOther = (inputs.deptSelect.value === "OTHER");
-            const isAssign = inputs.subTypeSelect.value.includes('assign');
+            const subType = inputs.subTypeSelect.value;
+            const isAssign = subType.includes('assign');
             const autoDiv = document.getElementById('autoControlsDiv');
             const manualDeptDiv = document.getElementById('manualDeptDiv');
 
@@ -514,8 +522,8 @@
 
         function updatePreview() {
             const subType = inputs.subTypeSelect.value;
-            const isLab = (subType === 'lab');
-            const isGroup = (subType === 'oel' || subType === 'group_assign');
+            const isLabBase = (subType === 'lab' || subType === 'lab_group');
+            const isGroup = (subType === 'oel' || subType === 'group_assign' || subType === 'lab_group');
             const isSingleAssign = (subType === 'single_assign');
             
             // Layout Slider Logic
@@ -526,7 +534,20 @@
             document.getElementById('submitSectionWrapper').style.marginLeft = mLeft;
             document.getElementById('submitSectionWrapper').style.marginTop = mTop;
             
-            // Toggles for Lab vs Non-Lab
+            // Label Width control display check
+            const singleLabelWidthCtrl = document.getElementById('singleLabelWidthCtrl');
+            if (!isGroup) {
+                singleLabelWidthCtrl.style.display = 'block';
+                const lblWidth = inputs.labelWidthSlider.value + 'px';
+                document.getElementById('labelWidthVal').innerText = inputs.labelWidthSlider.value;
+                document.querySelectorAll('.single-lbl').forEach(el => {
+                    el.style.width = lblWidth;
+                });
+            } else {
+                singleLabelWidthCtrl.style.display = 'none';
+            }
+            
+            // Toggles for Lab vs Non-Lab fields
             const manualExpNoWrapper = document.getElementById('manualExpNoWrapper');
             const inputExpNoWrapper = document.getElementById('inputExpNoWrapper');
             const datesHeader = document.getElementById('datesHeader');
@@ -536,7 +557,7 @@
             const showPerfDate = inputs.showPerfDateCb.checked;
             const showSubDate = inputs.showSubDateCb.checked;
 
-            if (isLab) {
+            if (isLabBase) {
                 manualExpNoWrapper.style.display = 'block';
                 inputExpNoWrapper.style.display = 'block';
                 previewExpNoRow.style.display = 'table-row';
@@ -552,22 +573,23 @@
 
             // Headings & Labels based on Type
             const typeLabel = document.getElementById('typeTitleTag');
-            const expNameLabel = document.getElementById('labelExpName');
+            const expNameLabel = document.getElementById('labelExpNo').parentNode.nextElementSibling.firstElementChild; 
             const labelExpNameInput = document.getElementById('labelExpNameInput');
 
-            if(subType === 'lab') {
+            if(subType === 'lab' || subType === 'lab_group') {
                 typeLabel.innerText = "LAB REPORT";
-                expNameLabel.innerText = "Experiment Name";
+                document.getElementById('labelExpNo').innerText = "Experiment No";
+                document.getElementById('labelExpName').innerText = "Experiment Name";
                 labelExpNameInput.innerText = "Exp Name";
                 inputs.expNameInput.placeholder = "Exp Name";
             } else if(subType === 'oel') {
                 typeLabel.innerText = "OPEN ENDED LAB REPORT";
-                expNameLabel.innerText = "Title";
+                document.getElementById('labelExpName').innerText = "Title";
                 labelExpNameInput.innerText = "Title";
                 inputs.expNameInput.placeholder = "Open Ended Lab Title";
             } else if(subType === 'single_assign' || subType === 'group_assign') {
                 typeLabel.innerText = "ASSIGNMENT";
-                expNameLabel.innerText = "Title";
+                document.getElementById('labelExpName').innerText = "Title";
                 labelExpNameInput.innerText = "Title";
                 inputs.expNameInput.placeholder = "Assignment Title";
             }
@@ -736,6 +758,8 @@
             let title = "";
             if (subType === 'lab') {
                 title = `${code}- Exp ${exp}`;
+            } else if (subType === 'lab_group') {
+                title = inputs.showGroupNoCb.checked ? `${code}- Lab Group ${gNo}- Exp ${exp}` : `${code}- Lab Group- Exp ${exp}`;
             } else if (subType === 'oel') {
                 title = inputs.showGroupNoCb.checked ? `${code}- OEL- Group ${gNo}` : `${code}- OEL`;
             } else if (subType === 'single_assign') {
